@@ -5,7 +5,7 @@ Zielkamera fürs Rudern
 
 ## ToDo
 
-- [ ]  Lineal für den Vergleich
+- [ ]  Lineal für den Vergleich (In neuem Bereich / Fenster?!)
 - [ ]  Scaling dass die Breite sich an das Fenster anpasst
 - [ ]  Welche Auflösung der Kamera wird verarbeitet? (Maximal mögliche verwenden! Auch für composite Ausgabe)
 - [ ]  Wieviele FPS der Kamera werden verarbeitet?

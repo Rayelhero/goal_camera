@@ -29,8 +29,12 @@ class SlitScanApp:
             messagebox.showerror("Error", "Could not open selected camera!")
             root.destroy()
             return
+        
+        # Set the resolution to 1080p
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
             
-        self.slit_x = 320
+        self.slit_x = 960
         self.composite = None
         self.is_recording = False
         self.last_preview_update = 0
@@ -97,6 +101,34 @@ class SlitScanApp:
         # Composite preview (right)
         self.composite_panel = tk.Label(self.display_frame)
         self.composite_panel.pack(side=tk.LEFT, padx=5)
+
+        # Slit position controls
+        self.slit_controls = ttk.Frame(self.root)
+        self.slit_controls.pack(padx=10, pady=10)
+
+        self.left_btn = ttk.Button(
+            self.slit_controls,
+            text="Left",
+            command=self.move_slit_left
+        )
+        self.left_btn.pack(side=tk.LEFT, padx=5)
+
+        self.right_btn = ttk.Button(
+            self.slit_controls,
+            text="Right",
+            command=self.move_slit_right
+        )
+        self.right_btn.pack(side=tk.LEFT, padx=5)
+
+        width = self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+        height = self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        print(f"Camera resolution: {int(width)}x{int(height)}")
+
+    def move_slit_left(self):
+        self.slit_x = max(0, self.slit_x - 10)  # Ensure slit_x doesn't go below 0
+
+    def move_slit_right(self):
+        self.slit_x = min(int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)) - 1, self.slit_x + 10)  # Ensure slit_x doesn't exceed frame width
 
     def start_capture(self):
         self.composite = None

@@ -1,9 +1,9 @@
-import cv2
-import numpy as np
+import time
 import tkinter as tk
 from tkinter import ttk, messagebox
+import cv2
+import numpy as np
 from PIL import Image, ImageTk
-import time
 from cv2_enumerate_cameras import enumerate_cameras
 
 class SlitScanApp:
@@ -34,7 +34,7 @@ class SlitScanApp:
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
             
-        self.slit_x = 960
+        self.slit_x = 960   
         self.composite = None
         self.is_recording = False
         self.last_preview_update = 0

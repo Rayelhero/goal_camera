@@ -122,7 +122,11 @@ class SlitScanApp:
 
         width = self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)
         height = self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
-        print(f"Camera resolution: {int(width)}x{int(height)}")
+        fps = self.cap.get(cv2.CAP_PROP_FPS)
+        print(f"Camera resolution: {int(width)}x{int(height)}, Framerate:{fps}")
+        print(f"Slit position: {self.slit_x}")
+        print(f"Camera index: {self.selected_cam_index}")
+        print(f"Camera name: {self.cameras[self.selected_cam_index].name}")
 
     def move_slit_left(self):
         self.slit_x = max(0, self.slit_x - 10)  # Ensure slit_x doesn't go below 0
@@ -149,6 +153,21 @@ class SlitScanApp:
         ret, frame = self.cap.read()
         if ret:
             current_time = time.time()
+
+            # Calculate framerate dynamically
+            if not hasattr(self, 'frame_times'):
+                self.frame_times = []
+            self.frame_times.append(current_time)
+            if len(self.frame_times) > 30:  # Keep the last 30 frame times
+                self.frame_times.pop(0)
+            if len(self.frame_times) > 1:
+                fps = len(self.frame_times) / (self.frame_times[-1] - self.frame_times[0])
+            else:
+                fps = 0.0
+            
+            # Print resolution and framerate
+            height, width, _ = frame.shape
+            print(f"Camera resolution: {width}x{height}, Framerate: {fps:.2f} FPS")
             
             # Draw a red border around the slit_x coordinate
             height, width, _ = frame.shape
